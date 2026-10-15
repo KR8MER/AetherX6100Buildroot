@@ -1,0 +1,3 @@
+# Read by /etc/init.d/S49ntp: use the configuration S48ntpconf wrote from the
+# GUI's time server choice, or /etc/ntp.conf when there is none
+[ -r /var/run/ntp.conf ] && NTPD_ARGS="$NTPD_ARGS -c /var/run/ntp.conf"

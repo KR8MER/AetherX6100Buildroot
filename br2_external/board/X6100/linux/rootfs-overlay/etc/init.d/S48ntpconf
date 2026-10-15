@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# Writes the ntpd configuration, using the time server chosen in the GUI in
+# place of pool.ntp.org. The GPS reference in /etc/ntp.conf is kept, so a USB
+# GPS still disciplines the clock. /etc/default/ntpd points ntpd at the file.
+#
+
+. /etc/ntp-server.sh
+
+CONF=/var/run/ntp.conf
+
+generate() {
+    server=$(ntp_server)
+    if [ -n "$server" ]; then
+        grep -v '^server [0-9]*\.pool\.ntp\.org' /etc/ntp.conf > "$CONF.tmp" &&
+            echo "server $server iburst" >> "$CONF.tmp"
+    else
+        cp /etc/ntp.conf "$CONF.tmp"
+    fi && mv "$CONF.tmp" "$CONF"
+}
+
+case "$1" in
+    start)
+        generate
+        ;;
+    restart|reload)
+        generate
+        /etc/init.d/S49ntp restart
+        ;;
+    stop)
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|reload}"
+        exit 1
+esac
