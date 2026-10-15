@@ -12,6 +12,6 @@ X6100_GUI_LICENSE = GPLv2
 
 X6100_GUI_INSTALL_STAGING = YES
 
-X6100_GUI_DEPENDENCIES = rhvoice libpng aether-x6100-control ft8lib
+X6100_GUI_DEPENDENCIES = rhvoice libpng aether-x6100-control ft8lib libcurl jansson
 
 $(eval $(cmake-package))
